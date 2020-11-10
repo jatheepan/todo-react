@@ -1,0 +1,25 @@
+[{
+  "id": 1,
+  "name": "Common",
+  "color": "#cd0000"
+}, {
+  "id": 2,
+  "name": "Education",
+  "color": "#cdcdcd"
+}, {
+  "id": 3,
+  "name": "Shopping",
+  "color": "#000000"
+}, {
+  "id": 4,
+  "name": "Kids",
+  "color": "#cccccc"
+}, {
+  "id": 5,
+  "name": "Sports",
+  "color": "#333333"
+}, {
+  "id": 6,
+  "name": "Home",
+  "color": "#e1e1e1"
+}]
