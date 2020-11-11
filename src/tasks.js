@@ -24,11 +24,14 @@ import {
   AvTimerOutlined as ClockIcon
 } from '@material-ui/icons';
 import moment from 'moment';
+import { Map } from 'immutable';
 import { StoreConsumer } from "./store";
+import TaskForm from "./taskForm";
 
 export default function Tasks() {
-  const [visible, setVisible] = useState(false);
-  const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const [confirmVisible, setConfirmVisible] = useState(false);
+  const [editTaskVisible, setEditTaskVisible] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(Map());
   const classes = makeStyles((theme) => ({
     root: {
       width: '100%',
@@ -79,10 +82,13 @@ export default function Tasks() {
                         />
                         <div>
                           <ListItemSecondaryAction>
-                            <IconButton><EditIcon /></IconButton>
                             <IconButton onClick={() => {
-                              setSelectedTaskId(item.get('id'));
-                              setVisible(true);
+                              setSelectedTask(item);
+                              setEditTaskVisible(true);
+                            }}><EditIcon /></IconButton>
+                            <IconButton onClick={() => {
+                              setSelectedTask(item);
+                              setConfirmVisible(true);
                             }}><DeleteIcon /></IconButton>
                           </ListItemSecondaryAction>
                         </div>
@@ -92,8 +98,8 @@ export default function Tasks() {
                 })}
               </List>
               <Dialog
-                open={visible}
-                onClose={() => setVisible(false)}>
+                open={confirmVisible}
+                onClose={() => setConfirmVisible(false)}>
                 <DialogTitle>Confirm</DialogTitle>
                 <DialogContent>
                   <DialogContentText>
@@ -101,17 +107,27 @@ export default function Tasks() {
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                  <Button autoFocus onClick={() => setVisible(false)} color="primary">
+                  <Button autoFocus onClick={() => setConfirmVisible(false)} color="primary">
                     No
                   </Button>
                   <Button onClick={() => {
-                    setVisible(false);
-                    context.removeTask(selectedTaskId);
+                    setConfirmVisible(false);
+                    context.removeTask(selectedTask.get('id'));
                   }} color="primary" autoFocus>
                     Yes
                   </Button>
                 </DialogActions>
               </Dialog>
+              <Dialog fullWidth={true} open={editTaskVisible} onClose={() => setEditTaskVisible(false)}>
+                <DialogTitle>Edit Task</DialogTitle>
+                <DialogContent>
+                  <TaskForm categories={context.categories} initialValues={selectedTask} onFormSubmit={(formData) => {
+                    context.editTask(selectedTask.get('id'), formData);
+                    setEditTaskVisible(false);
+                  }} />
+                </DialogContent>
+              </Dialog>
+
             </Fragment>
           );
         }}

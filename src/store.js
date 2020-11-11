@@ -49,6 +49,12 @@ function StoreProvider(props) {
     setTasks(tasks);
     setFilteredTasks(getFilteredTasks(tasks, filters));
   };
+  const editTask = (id, task) => {
+    const index = tasks.findIndex(t => t.get('id') === id);
+    tasks = tasks.set(index, Map({id, ...task}));
+    setTasks(tasks);
+    setFilteredTasks(getFilteredTasks(tasks, filters));
+  };
   const getCategoryById = (id) => {
     return categories.find(c => c.get('id') === id);
   };
@@ -77,6 +83,7 @@ function StoreProvider(props) {
       filters,
       addCategory,
       addTask,
+      editTask,
       toggleStatus,
       removeTask,
       getCategoryById,

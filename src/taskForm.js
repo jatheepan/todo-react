@@ -8,14 +8,15 @@ import {
 } from '@material-ui/core';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import { Map } from 'immutable';
 import moment from 'moment';
-export default function TaskForm({initialValues = {}, categories = [], onFormSubmit = () => {}}) {
+export default function TaskForm({initialValues = Map(), categories = [], onFormSubmit = () => {}}) {
   const [errors, setErrors] = useState([]);
-  const [title, setTitle] = useState(initialValues.title || '');
-  const [description, setDescription] = useState(initialValues.description || '');
-  const [categoryId, setCategoryId] = useState(initialValues.categoryId || '');
-  const [status, setStatus] = useState(initialValues.status || 'pending');
-  const [dueDate, setDueDate] = useState(initialValues.dueDate ? moment(initialValues.dueDate).toDate() : new Date());
+  const [title, setTitle] = useState(initialValues.get('title') || '');
+  const [description, setDescription] = useState(initialValues.get('description') || '');
+  const [categoryId, setCategoryId] = useState(initialValues.get('categoryId') || '');
+  const [status, setStatus] = useState(initialValues.get('status') || 'pending');
+  const [dueDate, setDueDate] = useState(initialValues.get('dueDate') ? moment(initialValues.get('dueDate')).toDate() : new Date());
   const classes = makeStyles((theme) => ({
     root: {
       width: '100%',
