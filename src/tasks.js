@@ -13,7 +13,9 @@ import {
   DialogContentText,
   DialogActions,
   ListItemSecondaryAction,
-  IconButton
+  IconButton,
+  MenuItem,
+  TextField
 } from '@material-ui/core';
 import {
   DeleteOutlined as DeleteIcon,
@@ -25,11 +27,10 @@ import { StoreConsumer } from "./store";
 
 export default function Tasks() {
   const [visible, setVisible] = useState(false);
-  const [selectedTaskIndex, setSelectedTaskIndex] = useState(null);
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
   const classes = makeStyles((theme) => ({
     root: {
       width: '100%',
-      maxWidth: 400,
       backgroundColor: theme.palette.background.paper,
       position: 'relative',
       overflow: 'auto',
@@ -47,8 +48,9 @@ export default function Tasks() {
         {context => {
           return (
             <Fragment>
+              <SearchForm />
               <List>
-                {context.tasks.map((item, index) => {
+                {context.filteredTasks.map((item, index) => {
                   const category = context.getCategoryById(item.get('categoryId'));
                   return(
                     <div key={item.get('id')}>
@@ -58,7 +60,7 @@ export default function Tasks() {
                             <FormControlLabel
                               control={<Checkbox color="primary" checked={item.get('status') === 'done'} onChange={() => {
                                 let status = item.get('status');
-                                context.toggleStatus(index, status === 'done' ? 'pending' : 'done');
+                                context.toggleStatus(item.get('id'), status === 'done' ? 'pending' : 'done');
                               }} />}
                               label={item.get('title')}
                             />
@@ -83,7 +85,7 @@ export default function Tasks() {
                           <ListItemSecondaryAction>
                             <IconButton><EditIcon /></IconButton>
                             <IconButton onClick={() => {
-                              setSelectedTaskIndex(index);
+                              setSelectedTaskId(item.get('id'));
                               setVisible(true);
                             }}><DeleteIcon /></IconButton>
                           </ListItemSecondaryAction>
@@ -108,7 +110,7 @@ export default function Tasks() {
                   </Button>
                   <Button onClick={() => {
                     setVisible(false);
-                    context.removeTask(selectedTaskIndex);
+                    context.removeTask(selectedTaskId);
                   }} color="primary" autoFocus>
                     Yes
                   </Button>
@@ -119,5 +121,52 @@ export default function Tasks() {
         }}
       </StoreConsumer>
     </div>
+  );
+}
+
+function SearchForm(props) {
+  const classes = makeStyles((theme) => ({
+    root: {
+      display: 'flex',
+      '& .MuiTextField-root': {
+        margin: theme.spacing(1),
+        width: '100%'
+      }
+    }
+  }))();
+  return (
+      <StoreConsumer>
+        {context => {
+          return (
+            <form className={classes.root} noValidate autoComplete="off">
+              <TextField
+                select
+                label="Status"
+                value={context.filters.get('status')}
+                onChange={e => context.updateFilter('status', e.target.value)}>
+                  <MenuItem value="all">All</MenuItem>
+                  <MenuItem value="done">Done</MenuItem>
+                  <MenuItem value="pending">Pending</MenuItem>
+              </TextField>
+              <TextField
+                select
+                label="Category"
+                value={context.filters.get('category')}
+                onChange={e => context.updateFilter('category', e.target.value)}>
+                  <MenuItem value="all">All</MenuItem>
+                  {context.categories.map((item, index) => {
+                    return(
+                      <MenuItem value={item.get('id')} key={item.get('id')}>{item.get('name')}</MenuItem>
+                    );
+                  })}
+              </TextField>
+              <TextField
+                id="standard-basic"
+                label="Title or Description"
+                onChange={e => context.updateFilter('query', e.target.value)} />
+            </form>
+          );
+        }}
+      </StoreConsumer>
   );
 }

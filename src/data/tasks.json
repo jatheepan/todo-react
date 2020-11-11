@@ -9,13 +9,13 @@
   "id": 2,
   "categoryId": 2,
   "title": "DB Schema",
-  "description": "Lorem ipsum",
+  "description": "Lorem ipsum fake text",
   "status": "done",
   "dueDate": "2020-10-08"
 }, {
   "id": 3,
   "categoryId": 3,
-  "title": "DB Schema",
+  "title": "DB Schema 2",
   "description": "Lorem ipsum",
   "status": "done",
   "dueDate": "2020-11-13"
