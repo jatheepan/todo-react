@@ -56,7 +56,7 @@ export default function Tasks() {
                   const category = context.getCategoryById(item.get('categoryId'));
                   return(
                     <div key={item.get('id')}>
-                      <ListItem style={{marginTop: 1, borderLeft: `3px solid ${category.get('color')}`}}>
+                      <ListItem style={{marginTop: 1, borderLeft: `3px solid ${category ? category.get('color') : '#fff'}`}}>
                         <ListItemText
                           primary={
                             <FormControlLabel
@@ -73,13 +73,7 @@ export default function Tasks() {
                                 {item.get('description')}
                               </span>
                               <br />
-                              {(() => {
-                                const dueDate = moment(item.get('dueDate'));
-                                if(dueDate.isBefore(moment())) {
-                                  return (<span className={classes.metaData}><ClockIcon />Overdue</span>);
-                                }
-                                return (<span className={classes.metaData}><ClockIcon />Due in {dueDate.fromNow()}</span>);
-                              })()}
+                              <span className={classes.metaData}><ClockIcon />{moment(item.get('dueDate')).format('DD/MM/YYYY')}</span>
                             </Fragment>
                           }
                         />

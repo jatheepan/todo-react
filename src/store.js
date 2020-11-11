@@ -45,7 +45,9 @@ function StoreProvider(props) {
     setCategories(categories.push(Map({id: uuidv4(), ...category})));
   };
   const addTask = (task) => {
-    setTasks(tasks.push(Map({id: uuidv4(), ...task})));
+    tasks = tasks.push(Map({id: uuidv4(), ...task}));
+    setTasks(tasks);
+    setFilteredTasks(getFilteredTasks(tasks, filters));
   };
   const getCategoryById = (id) => {
     return categories.find(c => c.get('id') === id);

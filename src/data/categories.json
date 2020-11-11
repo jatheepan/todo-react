@@ -1,25 +1,5 @@
-[{
-  "id": 1,
-  "name": "Common",
-  "color": "#cd0000"
-}, {
-  "id": 2,
-  "name": "Education",
-  "color": "#cdcdcd"
-}, {
-  "id": 3,
-  "name": "Shopping",
-  "color": "#000000"
-}, {
-  "id": 4,
-  "name": "Kids",
-  "color": "#cccccc"
-}, {
-  "id": 5,
-  "name": "Sports",
-  "color": "#333333"
-}, {
-  "id": 6,
-  "name": "Home",
-  "color": "#e1e1e1"
-}]
+[{"id":"f6023ef0-3e70-4db1-992f-3927b766ae43","name":"flexibility","color":"#6ef40d"},
+  {"id":"2a39617e-3166-4e24-baf7-36e82df990c7","name":"zero administration","color":"#170313"},
+  {"id":"7505cf01-8c84-4bc2-8a45-41d1fa3a7418","name":"asynchronous","color":"#ca4afa"},
+  {"id":"c12150a9-1fc8-49ab-a484-855e8c339ba2","name":"Synergistic","color":"#009853"},
+  {"id":"6b42a9d8-fd53-4945-878c-d6670fe4bd30","name":"analyzer","color":"#2fb8b7"}]
