@@ -17,6 +17,7 @@ import {
   MenuItem,
   TextField
 } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import {
   DeleteOutlined as DeleteIcon,
   EditOutlined as EditIcon,
@@ -49,6 +50,7 @@ export default function Tasks() {
           return (
             <Fragment>
               <SearchForm />
+              {!context.filteredTasks.size ? <Alert severity="info">No items found</Alert>: ''}
               <List>
                 {context.filteredTasks.map((item, index) => {
                   const category = context.getCategoryById(item.get('categoryId'));

@@ -3,6 +3,7 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
+  ButtonGroup,
   Button
 } from '@material-ui/core';
 import Categories from './categories';
@@ -10,20 +11,18 @@ import Tasks from './tasks';
 import './App.css';
 
 function App() {
-  const [open, setOpen] = useState(false);
+  const [categoriesVisible, setCategoriesVisible] = useState(false);
   return (
     <div className="App">
-      <div>
-        <Button variant="outlined" color="primary" onClick={() => setOpen(true)}>
-          Categories
-        </Button>
-        <Dialog fullWidth={true} open={open} onClose={() => setOpen(false)} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Categories</DialogTitle>
-          <DialogContent>
-            <Categories />
-          </DialogContent>
-        </Dialog>
-      </div>
+      <ButtonGroup color="primary" aria-label="outlined primary button group">
+        <Button onClick={() => setCategoriesVisible(true)}>Categories</Button>
+      </ButtonGroup>
+      <Dialog fullWidth={true} open={categoriesVisible} onClose={() => setCategoriesVisible(false)} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Categories</DialogTitle>
+        <DialogContent>
+          <Categories />
+        </DialogContent>
+      </Dialog>
       <Tasks />
     </div>
   );

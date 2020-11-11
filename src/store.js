@@ -14,13 +14,33 @@ const sortedTasks = tasksJson.sort((a, b) => {
   return 0;
 });
 
+const getFilteredTasks = (tasks, filters) => {
+  return tasks.filter((task) => {
+    const status = filters.get('status');
+    const category = filters.get('category');
+    const searchQuery = filters.get('query').toLowerCase();
+    if(status !== 'all' && status !== task.get('status')) {
+      return false;
+    }
+    if(category !== 'all' && category !== task.get('categoryId')) {
+      return false;
+    }
+    if(searchQuery !== '' &&
+      !(task.get('title').toLowerCase().search(searchQuery) > -1 || task.get('description').toLowerCase().search(searchQuery) > -1)) {
+      return false;
+    }
+    return true;
+  });
+};
+
 const { Provider, Consumer } = React.createContext();
 
 function StoreProvider(props) {
   let [categories, setCategories] = useState(fromJS(categoriesJson));
   let [tasks, setTasks] = useState(fromJS(sortedTasks));
-  let [filteredTasks, setFilteredTasks] = useState(tasks);
-  let [filters, setFilters] = useState(Map({status: 'all', category: 'all', query: ''}));
+  let [filters, setFilters] = useState(Map({status: 'pending', category: 'all', query: ''}));
+  let [filteredTasks, setFilteredTasks] = useState(getFilteredTasks(tasks, filters));
+
   const addCategory = (category) => {
     setCategories(categories.push(Map({id: uuidv4(), ...category})));
   };
@@ -34,37 +54,18 @@ function StoreProvider(props) {
     const index = tasks.findIndex(t => t.get('id') === id);
     tasks = tasks.setIn([index, 'status'], status);
     setTasks(tasks);
-    refreshTaskList();
+    setFilteredTasks(getFilteredTasks(tasks, filters));
   };
   const removeTask = (id) => {
     const index = tasks.findIndex(t => t.get('id') === id);
     tasks = tasks.delete(index);
     setTasks(tasks);
-    refreshTaskList();
-  };
-  const refreshTaskList = () => {
-    filteredTasks = tasks.filter((task) => {
-      const status = filters.get('status');
-      const category = filters.get('category');
-      const searchQuery = filters.get('query').toLowerCase();
-      if(status !== 'all' && status !== task.get('status')) {
-        return false;
-      }
-      if(category !== 'all' && category !== task.get('categoryId')) {
-        return false;
-      }
-      if(searchQuery !== '' &&
-        !(task.get('title').toLowerCase().search(searchQuery) > -1 || task.get('description').toLowerCase().search(searchQuery) > -1)) {
-        return false;
-      }
-      return true;
-    });
-    setFilteredTasks(filteredTasks);
+    setFilteredTasks(getFilteredTasks(tasks, filters));
   };
   const updateFilter = (field, value) => {
     filters = filters.set(field, value);
     setFilters(filters);
-    refreshTaskList();
+    setFilteredTasks(getFilteredTasks(tasks, filters));
   };
 
   return (

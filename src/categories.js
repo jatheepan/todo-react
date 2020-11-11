@@ -5,11 +5,9 @@ import {
   ListItem,
   ListItemText,
   TextField,
-  Button,
-  Popper,
-  ClickAwayListener
+  Button
 } from '@material-ui/core';
-import { TwitterPicker as ColorOptions } from 'react-color';
+import { CirclePicker as ColorOptions } from 'react-color';
 import { StoreConsumer } from "./store";
 
 export default function Categories() {
@@ -21,6 +19,12 @@ export default function Categories() {
     root: {
       width: '100%',
       backgroundColor: theme.palette.background.paper,
+    },
+    submitButton: {
+      color: '#fff',
+      marginTop: 10,
+      backgroundImage: 'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
+      boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
     }
   }))();
   const formSubmit = (context) => {
@@ -54,24 +58,17 @@ export default function Categories() {
                 value={name}
                 onChange={(e) => {setName(e.target.value)}}
                 margin="dense"
-                id="name"
-                label="Name"
+                label="Category Name"
                 type="text"
               />
-              <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
-                <div style={{position: 'relative'}}>
-                  <Button aria-describedby={id} onClick={(e) => {
-                    setAnchorEl(anchorEl ? null : e.currentTarget);
-                  }} style={{backgroundColor: color}}>Color</Button>
-                  <Popper open={open} anchorEl={anchorEl} style={{zIndex: 9999}} placement="bottom-start">
-                    <ColorOptions onChangeComplete={ ({hex}) => {
-                      setColor(hex);
-                      setAnchorEl(null);
-                    } } />
-                  </Popper>
-                </div>
-              </ClickAwayListener>
-              <Button id={id} color="primary" onClick={() => formSubmit(context)}>Add</Button>
+
+              <p>Color</p>
+              <ColorOptions width="100%" height={100} onChangeComplete={ ({hex}) => {
+                setColor(hex);
+                setAnchorEl(null);
+              }} />
+
+              <Button className={classes.submitButton} size="large" color="primary" onClick={() => formSubmit(context)}>Add</Button>
 
               <List component="nav">
                 {context.categories.map((item, index) => {
