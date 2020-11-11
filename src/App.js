@@ -6,6 +6,7 @@ import {
   Button
 } from '@material-ui/core';
 import Categories from './categories';
+import Tasks from './tasks';
 import './App.css';
 
 function App() {
@@ -17,12 +18,13 @@ function App() {
           Categories
         </Button>
         <Dialog fullWidth={true} open={open} onClose={() => setOpen(false)} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Categories</DialogTitle>
-            <DialogContent>
-              <Categories />
-            </DialogContent>
+          <DialogTitle id="form-dialog-title">Categories</DialogTitle>
+          <DialogContent>
+            <Categories />
+          </DialogContent>
         </Dialog>
       </div>
+      <Tasks />
     </div>
   );
 }
