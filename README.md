@@ -2,10 +2,15 @@
 
 In the project directory, you can run:
 
-### `npm install && npm start`
+## Scripts
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+For Development
 
-### `npm run build`
+`npm install && npm start`
 
+Build
+
+`npm run build`
+
+## Demo
+Please visit [demo app](http://jatheepan.github.io/todo-react)
