@@ -55,7 +55,7 @@ export default function Tasks() {
               <SearchForm />
               {!context.filteredTasks.size ? <Alert severity="info">No items found</Alert>: ''}
               <List>
-                {context.filteredTasks.map((item, index) => {
+                {context.filteredTasks.map((item) => {
                   const category = context.getCategoryById(item.get('categoryId'));
                   return(
                     <div key={item.get('id')}>
@@ -136,7 +136,7 @@ export default function Tasks() {
   );
 }
 
-function SearchForm(props) {
+function SearchForm() {
   const classes = makeStyles((theme) => ({
     root: {
       display: 'flex',
@@ -144,39 +144,52 @@ function SearchForm(props) {
         margin: theme.spacing(1),
         width: '100%'
       }
+    },
+    submitButton: {
+      color: '#fff',
+      backgroundImage: 'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
+      boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
+      marginBottom: 20
     }
   }))();
   return (
       <StoreConsumer>
         {context => {
           return (
-            <form className={classes.root} noValidate autoComplete="off">
-              <TextField
-                select
-                label="Status"
-                value={context.filters.get('status')}
-                onChange={e => context.updateFilter('status', e.target.value)}>
-                  <MenuItem value="all">All</MenuItem>
-                  <MenuItem value="done">Done</MenuItem>
-                  <MenuItem value="pending">Pending</MenuItem>
-              </TextField>
-              <TextField
-                select
-                label="Category"
-                value={context.filters.get('category')}
-                onChange={e => context.updateFilter('category', e.target.value)}>
-                  <MenuItem value="all">All</MenuItem>
-                  {context.categories.map((item, index) => {
-                    return(
+            <Fragment>
+              <form className={classes.root} noValidate autoComplete="off">
+                <TextField
+                  select
+                  label="Status"
+                  value={context.filters.get('status')}
+                  onChange={e => context.updateFilters({
+                    ...context.filters.toJS(),
+                    status: e.target.value,
+                    dueDate: null
+                  })}>
+                    <MenuItem value="all">All</MenuItem>
+                    <MenuItem value="done">Done</MenuItem>
+                    <MenuItem value="pending">Pending</MenuItem>
+                </TextField>
+                <TextField
+                  select
+                  label="Category"
+                  value={context.filters.get('category')}
+                  onChange={e => context.updateFilters({...context.filters.toJS(), dueDate: null, category: e.target.value})}>
+                    <MenuItem value="all">All</MenuItem>
+                    {context.categories.map(item => (
                       <MenuItem value={item.get('id')} key={item.get('id')}>{item.get('name')}</MenuItem>
-                    );
-                  })}
-              </TextField>
-              <TextField
-                id="standard-basic"
-                label="Title or Description"
-                onChange={e => context.updateFilter('query', e.target.value)} />
-            </form>
+                    ))}
+                </TextField>
+                <TextField
+                  value={context.filters.get('query')}
+                  label="Title or Description"
+                  onChange={e => context.updateFilters({...context.filters.toJS(), dueDate: null, query: e.target.value})} />
+              </form>
+              <Button className={classes.submitButton} onClick={() => {
+                context.updateFilters({query: '', status: 'pending', category: 'all', dueDate: new Date()});
+              }}>Show Overdue Tasks</Button>
+            </Fragment>
           );
         }}
       </StoreConsumer>

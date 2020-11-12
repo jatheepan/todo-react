@@ -19,6 +19,7 @@ const getFilteredTasks = (tasks, filters) => {
     const status = filters.get('status');
     const category = filters.get('category');
     const searchQuery = filters.get('query').toLowerCase();
+    const dueDate = filters.get('dueDate');
     if(status !== 'all' && status !== task.get('status')) {
       return false;
     }
@@ -27,6 +28,9 @@ const getFilteredTasks = (tasks, filters) => {
     }
     if(searchQuery !== '' &&
       !(task.get('title').toLowerCase().search(searchQuery) > -1 || task.get('description').toLowerCase().search(searchQuery) > -1)) {
+      return false;
+    }
+    if(dueDate && moment(dueDate).isBefore(moment(task.get('dueDate')))) {
       return false;
     }
     return true;
@@ -75,6 +79,11 @@ function StoreProvider(props) {
     setFilters(filters);
     setFilteredTasks(getFilteredTasks(tasks, filters));
   };
+  const updateFilters = (f) => {
+    filters = fromJS(f);
+    setFilters(filters);
+    setFilteredTasks(getFilteredTasks(tasks, filters));
+  };
 
   return (
     <Provider value={{
@@ -87,7 +96,8 @@ function StoreProvider(props) {
       toggleStatus,
       removeTask,
       getCategoryById,
-      updateFilter
+      updateFilter,
+      updateFilters
     }}>{props.children}</Provider>
   );
 }
