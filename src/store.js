@@ -49,15 +49,21 @@ function StoreProvider(props) {
     setCategories(categories.push(Map({id: uuidv4(), ...category})));
   };
   const addTask = (task) => {
-    tasks = tasks.push(Map({id: uuidv4(), ...task}));
+    let index = 0;
+    for(let i = 0; i < tasks.size; i += 1) {
+      if(moment(task.dueDate).isBefore(moment(tasks.getIn([i, 'dueDate'])))) {
+        break;
+      }
+      index = i + 1;
+    }
+    tasks = tasks.insert(index, Map({id: uuidv4(), ...task}));
     setTasks(tasks);
     setFilteredTasks(getFilteredTasks(tasks, filters));
   };
   const editTask = (id, task) => {
-    const index = tasks.findIndex(t => t.get('id') === id);
-    tasks = tasks.set(index, Map({id, ...task}));
-    setTasks(tasks);
-    setFilteredTasks(getFilteredTasks(tasks, filters));
+    let index = tasks.findIndex(t => t.get('id') === id);
+    tasks = tasks.delete(index);
+    addTask(task);
   };
   const getCategoryById = (id) => {
     return categories.find(c => c.get('id') === id);
@@ -72,11 +78,6 @@ function StoreProvider(props) {
     const index = tasks.findIndex(t => t.get('id') === id);
     tasks = tasks.delete(index);
     setTasks(tasks);
-    setFilteredTasks(getFilteredTasks(tasks, filters));
-  };
-  const updateFilter = (field, value) => {
-    filters = filters.set(field, value);
-    setFilters(filters);
     setFilteredTasks(getFilteredTasks(tasks, filters));
   };
   const updateFilters = (f) => {
@@ -96,7 +97,6 @@ function StoreProvider(props) {
       toggleStatus,
       removeTask,
       getCategoryById,
-      updateFilter,
       updateFilters
     }}>{props.children}</Provider>
   );
