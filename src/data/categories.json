@@ -1,5 +1,27 @@
-[{"id":"a10f8e1f-fab0-4f85-aa42-5072afcbd601","name":"uniform","color":"#d43150"},
-  {"id":"f4db48ae-de75-450c-bec2-5c10880c183a","name":"intangible","color":"#16e696"},
-  {"id":"9228cf36-1602-4d50-bede-be075831ead5","name":"website","color":"#bdf1ca"},
-  {"id":"e5efa9e9-5f0b-4df4-9def-94cc486575c9","name":"Graphic Interface","color":"#8533f0"},
-  {"id":"adf9b682-adf2-4540-94f4-6521d9728850","name":"firmware","color":"#4f993c"}]
+[
+  {
+    "id": "a10f8e1f-fab0-4f85-aa42-5072afcbd601",
+    "name": "uniform",
+    "color": "#d43150"
+  },
+  {
+    "id": "f4db48ae-de75-450c-bec2-5c10880c183a",
+    "name": "intangible",
+    "color": "#16e696"
+  },
+  {
+    "id": "9228cf36-1602-4d50-bede-be075831ead5",
+    "name": "website",
+    "color": "#bdf1ca"
+  },
+  {
+    "id": "e5efa9e9-5f0b-4df4-9def-94cc486575c9",
+    "name": "Graphic Interface",
+    "color": "#8533f0"
+  },
+  {
+    "id": "adf9b682-adf2-4540-94f4-6521d9728850",
+    "name": "firmware",
+    "color": "#4f993c"
+  }
+]
